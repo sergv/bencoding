@@ -6,7 +6,7 @@ protocol but might be used anywhere else.
 ### Description
 
 This package implements fast seamless encoding/decoding to/from
-bencode format for many native datatypes. To achive
+bencode format for many native datatypes. To achieve
 [more performance][cmp] we use
 [bytestring builders][bytestring-builder] and hand optimized
 [attoparsec][attoparsec] parser so this library is considered as
@@ -40,7 +40,7 @@ For documentation see package [hackage][hackage] page.
 
 [![Build Status][travis-img]][travis-log]
 
-### Maintainer <pxqr.sta@gmail.com>
+### Maintainer <serg.foo@gmail.com>
 
 Feel free to report bugs and suggestions via [issue tracker][issues]
 or the mail.
@@ -53,8 +53,8 @@ or the mail.
 [attoparsec]: http://hackage.haskell.org/package/attoparsec-0.10.4.0
 [bytestring-builder]: http://hackage.haskell.org/packages/archive/bytestring/0.10.2.0/doc/html/Data-ByteString-Builder.html
 
-[travis-img]: https://travis-ci.org/cobit/bencoding.png
-[travis-log]: https://travis-ci.org/cobit/bencoding
+[travis-img]: https://travis-ci.org/sergv/bencoding.png
+[travis-log]: https://travis-ci.org/sergv/bencoding
 
 [hackage]: http://hackage.haskell.org/package/bencoding
-[issues]: https://github.com/cobit/bencoding/issues
+[issues]: https://github.com/sergv/bencoding/issues
