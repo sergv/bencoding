@@ -96,12 +96,15 @@ module Data.BEncode
 import Control.Applicative
 import Control.Monad
 import Control.Monad.State
+#if MIN_VERSION_mtl(2, 2, 0)
+import Control.Monad.Except
+#else
 import Control.Monad.Error
+#endif
 import Data.Int
 import Data.List as L
 import Data.Semigroup ((<>))
-import Data.Monoid (Monoid (mappend, mempty))
-import Data.Word          (Word8, Word16, Word32, Word64, Word)
+import Data.Word          (Word8, Word16, Word32, Word64)
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString.Char8 as BC
 import qualified Data.ByteString.Lazy as Lazy
@@ -110,6 +113,11 @@ import qualified Data.Text.Encoding as T
 import           Data.Typeable
 import           Data.Version
 import qualified Text.ParserCombinators.ReadP as ReadP
+
+#if __GLASGOW_HASKELL__ < 710
+import Data.Monoid (Monoid (mempty))
+import Data.Word (Word)
+#endif
 
 #if __GLASGOW_HASKELL__ >= 702
 import GHC.Generics

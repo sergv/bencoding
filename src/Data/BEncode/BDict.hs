@@ -9,6 +9,9 @@
 --   which both faster and more suitable for bencode dictionaries than
 --   just [(k,v)].
 --
+
+{-# LANGUAGE CPP #-}
+
 module Data.BEncode.BDict
        ( BKey
        , BDictMap (..)
@@ -36,8 +39,10 @@ module Data.BEncode.BDict
 
 import Control.DeepSeq
 import Data.ByteString as BS
+#if __GLASGOW_HASKELL__ < 710
 import Data.Foldable
 import Data.Monoid (Monoid (mappend, mempty))
+#endif
 import Data.Semigroup (Semigroup ((<>)))
 
 

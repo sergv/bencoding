@@ -10,7 +10,7 @@ category:              Data
 build-type:            Simple
 stability:             Experimental
 cabal-version:         >= 1.10
-tested-with:           GHC == 7.6.3
+tested-with:           GHC == 7.8.4, GHC == 7.10.3, GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.3
 homepage:              https://github.com/sergv/bencoding
 bug-reports:           https://github.com/sergv/bencoding/issues
 synopsis:              A library for encoding and decoding of BEncode data.
@@ -31,9 +31,16 @@ source-repository this
   branch:              master
   tag:                 v0.4.3.0
 
+flag dev
+  description:
+    Enable development options
+  default:
+    False
+  manual:
+    True
+
 library
   default-language:    Haskell2010
-  default-extensions:  PatternGuards
   hs-source-dirs:      src
   exposed-modules:     Data.BEncode
                      , Data.BEncode.BDict
@@ -50,10 +57,27 @@ library
                      , bytestring >= 0.10
                      , text       >= 0.11
                      , pretty
-  ghc-options:         -Wall -O2 -fno-warn-unused-do-bind
+  ghc-options:         -Wall -O2
   if !impl(ghc >= 8.0.0)
     build-depends:     semigroups >= 0.9 && < 0.19
 
+  if flag(dev)
+    ghc-options:
+      -fwarn-name-shadowing
+      -Werror
+    if impl(ghc >= 8.0)
+      ghc-options:
+        -Wcompat
+        -Whi-shadowing
+        -Widentities
+        -Wincomplete-record-updates
+        -Wincomplete-uni-patterns
+        -Wmissing-exported-signatures
+    if impl(ghc >= 8.2)
+      ghc-options:
+        -Wcpp-undef
+        -Wmissing-home-modules
+        -Wunbanged-strict-patterns
 
 test-suite properties
   type:                exitcode-stdio-1.0
@@ -71,7 +95,25 @@ test-suite properties
                      , hspec
                      , QuickCheck
 
-  ghc-options:         -Wall -fno-warn-orphans
+  ghc-options:         -Wall
+
+  if flag(dev)
+    ghc-options:
+      -fwarn-name-shadowing
+      -Werror
+    if impl(ghc >= 8.0)
+      ghc-options:
+        -Wcompat
+        -Whi-shadowing
+        -Widentities
+        -Wincomplete-record-updates
+        -Wincomplete-uni-patterns
+        -Wmissing-exported-signatures
+    if impl(ghc >= 8.2)
+      ghc-options:
+        -Wcpp-undef
+        -Wmissing-home-modules
+        -Wunbanged-strict-patterns
 
 
 benchmark bench-comparison
@@ -91,4 +133,22 @@ benchmark bench-comparison
                      , bencoding
                      , bencode     >= 0.5
                      , AttoBencode >= 0.2
-  ghc-options:         -O2 -Wall -fno-warn-orphans
+  ghc-options:         -O2 -Wall
+
+  if flag(dev)
+    ghc-options:
+      -fwarn-name-shadowing
+      -Werror
+    if impl(ghc >= 8.0)
+      ghc-options:
+        -Wcompat
+        -Whi-shadowing
+        -Widentities
+        -Wincomplete-record-updates
+        -Wincomplete-uni-patterns
+        -Wmissing-exported-signatures
+    if impl(ghc >= 8.2)
+      ghc-options:
+        -Wcpp-undef
+        -Wmissing-home-modules
+        -Wunbanged-strict-patterns

@@ -8,6 +8,7 @@
 --   This module provides bencode values serialization. Normally, you
 --   don't need to import this module, use 'Data.BEncode' instead.
 --
+{-# LANGUAGE CPP       #-}
 {-# LANGUAGE MagicHash #-}
 module Data.BEncode.Internal
        ( -- * Parsing
@@ -27,11 +28,13 @@ import           Data.ByteString as B
 import           Data.ByteString.Internal as B (c2w, w2c)
 import qualified Data.ByteString.Lazy as Lazy
 import qualified Data.ByteString.Lazy.Builder as B
-import qualified Data.ByteString.Lazy.Builder.ASCII as B
-import Data.Foldable
 import Data.List as L
-import Data.Monoid (Monoid (mappend, mempty))
 import Text.PrettyPrint hiding ((<>))
+
+#if __GLASGOW_HASKELL__ < 710
+import Data.Foldable
+import Data.Monoid (Monoid (mappend))
+#endif
 
 import Data.BEncode.Types
 import Data.BEncode.BDict as BD
@@ -109,7 +112,7 @@ parser = valueP
     stringP :: Parser ByteString
     stringP = do
       n <- P.decimal :: Parser Int
-      P.char ':'
+      _ <- P.char ':'
       P.take n
     {-# INLINE stringP #-}
 
@@ -118,7 +121,7 @@ parser = valueP
       c <- P.peekChar
       case c of
         Just '-' -> do
-          P.anyChar
+          _ <- P.anyChar
           negate <$> P.decimal
         _        ->  P.decimal
     {-# INLINE integerP #-}

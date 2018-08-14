@@ -1,8 +1,8 @@
 {-# LANGUAGE DeriveGeneric #-}
-{-# OPTIONS  -fno-warn-unused-binds #-}
+{-# OPTIONS  -fno-warn-orphans #-}
 module Main (main) where
 
-import Control.Applicative
+import Control.Applicative as A
 import Data.ByteString as BS
 import Data.ByteString.Lazy as BL
 import Data.List as L
@@ -19,7 +19,7 @@ instance Arbitrary BS.ByteString where
 
 instance Arbitrary a => Arbitrary (BE.BDictMap a) where
   arbitrary = frequency
-    [ (90, pure BE.Nil)
+    [ (90, A.pure BE.Nil)
     , (10, BE.Cons <$> arbitrary <*> arbitrary <*> arbitrary)
     ]
 
@@ -43,9 +43,9 @@ instance Arbitrary a => Arbitrary (List a) where
     ]
 
 data FileInfo = FileInfo
-  { fiLength :: !Integer
-  , fiPath   :: [BS.ByteString]
-  , fiMD5Sum :: BS.ByteString
+  { _fiLength :: !Integer
+  , _fiPath   :: [BS.ByteString]
+  , _fiMD5Sum :: BS.ByteString
   } deriving (Show, Eq, Generic)
 
 instance BEncode FileInfo

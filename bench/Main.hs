@@ -1,9 +1,18 @@
-{-# LANGUAGE PackageImports     #-}
-{-# LANGUAGE DeriveGeneric      #-}
-{-# LANGUAGE RecordWildCards    #-}
-{-# LANGUAGE OverloadedStrings  #-}
-{-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE BangPatterns       #-}
+{-# LANGUAGE CPP                #-}
+{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE DeriveGeneric      #-}
+{-# LANGUAGE OverloadedStrings  #-}
+{-# LANGUAGE PackageImports     #-}
+{-# LANGUAGE RecordWildCards    #-}
+
+#if __GLASGOW_HASKELL__ < 800
+{-# OPTIONS_GHC -fno-warn-incomplete-patterns #-}
+#else
+{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
+#endif
+{-# OPTIONS_GHC -fno-warn-orphans #-}
+
 module Main (main) where
 
 import Control.DeepSeq
@@ -180,7 +189,8 @@ main = do
        , let Right !be = C.parse torrentFile
              id'   x  = let t = either error id (fromBEncode x)
                         in toBEncode (t :: Torrent)
-             !_ = let Right t = C.decode torrentFile
+             !_unused@True =
+                     let Right t = C.decode torrentFile
                      in if C.decode (BL.toStrict (C.encode t))
                            /= Right (t :: Torrent)
                         then error "invalid instance: BEncode Torrent"
