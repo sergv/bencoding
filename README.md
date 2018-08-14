@@ -53,7 +53,7 @@ or the mail.
 [attoparsec]: http://hackage.haskell.org/package/attoparsec-0.10.4.0
 [bytestring-builder]: http://hackage.haskell.org/packages/archive/bytestring/0.10.2.0/doc/html/Data-ByteString-Builder.html
 
-[travis-img]: https://travis-ci.org/sergv/bencoding.png
+[travis-img]: https://travis-ci.org/sergv/bencoding.svg?branch=master
 [travis-log]: https://travis-ci.org/sergv/bencoding
 
 [hackage]: http://hackage.haskell.org/package/bencoding
