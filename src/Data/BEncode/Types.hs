@@ -6,7 +6,9 @@
 --   Portability :  portable
 --
 --   Types for working with bencode data.
---
+
+{-# LANGUAGE DeriveGeneric #-}
+
 module Data.BEncode.Types
        ( -- * Types
          BInteger
@@ -24,6 +26,7 @@ module Data.BEncode.Types
 
 import Control.DeepSeq
 import Data.ByteString
+import GHC.Generics (Generic)
 
 import Data.BEncode.BDict
 
@@ -49,7 +52,7 @@ data BValue
   | BString  !BString  -- ^ bencode strings;
   | BList     BList    -- ^ list of bencode values;
   | BDict     BDict    -- ^ bencode key-value dictionary.
-    deriving (Show, Read, Eq, Ord)
+    deriving (Show, Read, Eq, Ord, Generic)
 
 instance NFData BValue where
     rnf (BInteger i) = rnf i

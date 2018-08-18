@@ -10,7 +10,8 @@
 --   just [(k,v)].
 --
 
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP           #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Data.BEncode.BDict
        ( BKey
@@ -44,7 +45,7 @@ import Data.Foldable
 import Data.Monoid (Monoid (mappend, mempty))
 #endif
 import Data.Semigroup (Semigroup ((<>)))
-
+import GHC.Generics (Generic)
 
 type BKey = ByteString
 
@@ -59,7 +60,7 @@ type BKey = ByteString
 data BDictMap a
   = Cons !BKey a !(BDictMap a)
   | Nil
-    deriving (Show, Read, Eq, Ord)
+    deriving (Show, Read, Eq, Ord, Generic)
 
 instance NFData a => NFData (BDictMap a) where
   rnf  Nil         = ()
