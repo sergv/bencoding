@@ -5,7 +5,6 @@ module Main (main) where
 import Control.Applicative as A
 import Data.ByteString as BS
 import Data.ByteString.Lazy as BL
-import Data.List as L
 import GHC.Generics
 import Test.QuickCheck
 import Test.Hspec
@@ -13,23 +12,30 @@ import Test.Hspec
 import Data.BEncode
 import qualified Data.BEncode.BDict as BE
 
+smaller :: Gen a -> Gen a
+smaller = scale (* factor)
+  where
+    factor = 9 `div` 10
 
 instance Arbitrary BS.ByteString where
   arbitrary = BS.pack <$> arbitrary
+  shrink = fmap BS.pack . shrink . BS.unpack
 
 instance Arbitrary a => Arbitrary (BE.BDictMap a) where
   arbitrary = frequency
     [ (90, A.pure BE.Nil)
     , (10, BE.Cons <$> arbitrary <*> arbitrary <*> arbitrary)
     ]
+  shrink = genericShrink
 
 instance Arbitrary BValue where
   arbitrary = frequency
     [ (30, BInteger <$> arbitrary)
     , (30, BString  <$> arbitrary)
-    , (20, BList    <$> (arbitrary `suchThat` ((10 >) . L.length)))
-    , (20, BDict    <$> arbitrary)
+    , (20, BList    <$> smaller arbitrary)
+    , (20, BDict    <$> smaller arbitrary)
     ]
+  shrink = genericShrink
 
 data List a = Cons a (List a) | Nil
               deriving (Show, Eq, Generic)
@@ -41,6 +47,7 @@ instance Arbitrary a => Arbitrary (List a) where
     [ (90, pure Nil)
     , (10, Cons <$> arbitrary <*> arbitrary)
     ]
+  shrink = genericShrink
 
 data FileInfo = FileInfo
   { _fiLength :: !Integer
@@ -52,6 +59,7 @@ instance BEncode FileInfo
 
 instance Arbitrary FileInfo where
   arbitrary = FileInfo <$> arbitrary <*> arbitrary <*> arbitrary
+  shrink = genericShrink
 
 data T a = T
 
