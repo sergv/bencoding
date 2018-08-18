@@ -29,8 +29,12 @@ module Data.BEncode.BDict
          -- * Combine
        , Data.BEncode.BDict.union
 
-         -- * Traversal
+         -- * Maps
        , Data.BEncode.BDict.map
+       , Data.BEncode.BDict.mapWithKey
+
+         -- * Folds
+       , Data.BEncode.BDict.foldMapWithKey
        , Data.BEncode.BDict.bifoldMap
 
          -- * Conversion
@@ -137,14 +141,30 @@ map f = go
     go (Cons k v xs) = Cons k (f v) (go xs)
 {-# INLINE map #-}
 
+-- | /O(n)./ Map a function over all keys\/value pairs in the dictionary.
+mapWithKey :: (BKey -> a -> b) -> BDictMap a -> BDictMap b
+mapWithKey f = go
+  where
+    go Nil = Nil
+    go (Cons k v xs) = Cons k (f k v) (go xs)
+{-# INLINE mapWithKey #-}
+
+-- | /O(n)/. Map each key\/value pair to a monoid and fold resulting
+-- sequnce using 'mappend'.
+--
+foldMapWithKey :: Monoid m => (BKey -> a -> m) -> BDictMap a -> m
+foldMapWithKey f = go
+  where
+    go  Nil          = mempty
+    go (Cons k v xs) = f k v `mappend` go xs
+{-# INLINE foldMapWithKey #-}
+
+{-# DEPRECATED bifoldMap "Use foldMapWithKey instead" #-}
 -- | /O(n)/. Map each key\/value pair to a monoid and fold resulting
 -- sequnce using 'mappend'.
 --
 bifoldMap :: Monoid m => (BKey -> a -> m) -> BDictMap a -> m
-bifoldMap f = go
-  where
-    go  Nil          = mempty
-    go (Cons k v xs) = f k v `mappend` go xs
+bifoldMap = foldMapWithKey
 {-# INLINE bifoldMap #-}
 
 -- | /O(n)/. Build a dictionary from a list of key\/value pairs where

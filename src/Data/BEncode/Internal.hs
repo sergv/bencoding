@@ -62,7 +62,7 @@ builder = go
                         foldMap go l `mappend`
                         B.word8 (c2w 'e')
       go (BDict    d) = B.word8 (c2w 'd') `mappend`
-                        bifoldMap mkKV d `mappend`
+                        foldMapWithKey mkKV d `mappend`
                         B.word8 (c2w 'e')
           where
             mkKV k v = buildString k `mappend` go v
