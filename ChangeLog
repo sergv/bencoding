@@ -1,3 +1,7 @@
+2018-09-18  Sergey Vinokurov  <serg.foo@gmail.com>
+
+	* 0.4.4.0: Fix build for GHC 8.0-8.4. Derive Generic instances. Add Semigroup instance.
+
 2013-12-19  Sam Truzjan  <pxqr.sta@gmail.com>
 
 	* 0.4.3.0: Add lookAhead and match functions.
