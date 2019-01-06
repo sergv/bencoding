@@ -45,9 +45,13 @@ matrix:
       compiler: "GHC 8.2.2, Cabal 2.0"
       addons: {apt: {packages: [ghc-8.2.2, cabal-install-2.0], sources: [hvr-ghc]}}
 
-    - env: GHC=8.4.3 CABALVER=2.2 GHCHEAD=0
-      compiler: "GHC 8.4.3, Cabal 2.2"
+    - env: GHC=8.4.4 CABALVER=2.2 GHCHEAD=0
+      compiler: "GHC 8.4.4, Cabal 2.2"
       addons: {apt: {packages: [ghc-8.4.3, cabal-install-2.2], sources: [hvr-ghc]}}
+
+    - env: GHC=8.6.3 CABALVER=2.4 GHCHEAD=0
+      compiler: "GHC 8.6.3, Cabal 2.4"
+      addons: {apt: {packages: [ghc-8.6.3, cabal-install-2.4], sources: [hvr-ghc]}}
 
     - env: GHC=head CABALVER=head GHCHEAD=1
       compiler: "GHC HEAD, Cabal HEAD"
