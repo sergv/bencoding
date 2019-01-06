@@ -117,7 +117,7 @@ script:
   # Build the package
   - echo "Building package"
   - cabal new-configure $ALLOW_NEWER_FLAG
-  - cabal new-build
+  - cabal new-build --enable-benchmarks
   - cabal check
   - cabal new-test
   - cabal new-haddock all
