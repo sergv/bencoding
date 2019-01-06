@@ -29,7 +29,7 @@ source-repository this
   type:                git
   location:            https://github.com/sergv/bencoding.git
   branch:              master
-  tag:                 v0.4.4.0
+  tag:                 v0.4.5.0
 
 flag dev
   description:
