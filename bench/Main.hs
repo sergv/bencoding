@@ -17,7 +17,6 @@ module Main (main) where
 
 import Control.DeepSeq
 import Control.Exception
-import Data.Attoparsec.ByteString as Atto
 import           Data.ByteString as BS
 import qualified Data.ByteString.Lazy as BL
 import Data.List as L
@@ -34,8 +33,9 @@ import "bencoding" Data.BEncode.Internal as C
 import "bencoding" Data.BEncode.Types    as C
 
 #ifdef BENCHMARK_ATTOBENCODE
-import             Data.AttoBencode as B
-import             Data.AttoBencode.Parser as B
+import Data.Attoparsec.ByteString as Atto
+import Data.AttoBencode as B
+import Data.AttoBencode.Parser as B
 #endif
 
 instance NFData A.BEncode where
@@ -136,8 +136,10 @@ main = do
        defaultMain
        [ bench "decode/bencode"     $
            nf A.bRead                            lazyTorrentFile
+#ifdef BENCHMARK_ATTOBENCODE
        , bench "decode/AttoBencode" $
            nf (getRight . Atto.parseOnly bValue) torrentFile
+#endif
        , bench "decode/bencoding"   $
            nf (getRight . C.parse)              torrentFile
 
