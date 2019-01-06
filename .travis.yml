@@ -116,7 +116,7 @@ script:
 
   # Build the package
   - echo "Building package"
-  - cabal new-configure $ALLOW_NEWER_FLAG
+  - cabal new-configure $ALLOW_NEWER_FLAG -fbenchmark-atto-bencode
   - cabal new-build --enable-benchmarks
   - cabal check
   - cabal new-test

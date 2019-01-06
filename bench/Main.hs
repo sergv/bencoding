@@ -16,6 +16,7 @@
 module Main (main) where
 
 import Control.DeepSeq
+import Control.Exception
 import Data.Attoparsec.ByteString as Atto
 import           Data.ByteString as BS
 import qualified Data.ByteString.Lazy as BL
@@ -28,12 +29,14 @@ import Criterion.Main
 import GHC.Generics
 
 import "bencode"   Data.BEncode     as A
-import             Data.AttoBencode as B
-import             Data.AttoBencode.Parser as B
 import "bencoding" Data.BEncode     as C
 import "bencoding" Data.BEncode.Internal as C
 import "bencoding" Data.BEncode.Types    as C
 
+#ifdef BENCHMARK_ATTOBENCODE
+import             Data.AttoBencode as B
+import             Data.AttoBencode.Parser as B
+#endif
 
 instance NFData A.BEncode where
     rnf (A.BInt    i) = rnf i
@@ -41,11 +44,13 @@ instance NFData A.BEncode where
     rnf (A.BList   l) = rnf l
     rnf (A.BDict   m) = rnf m
 
+#ifdef BENCHMARK_ATTOBENCODE
 instance NFData B.BValue where
     rnf (B.BInt    i) = rnf i
     rnf (B.BString s) = rnf s
     rnf (B.BList   l) = rnf l
     rnf (B.BDict   d) = rnf d
+#endif
 
 getRight :: Either String a -> a
 getRight = either error id
@@ -125,8 +130,7 @@ main = do
   torrentFile   <- BS.readFile path
   let lazyTorrentFile = BL.fromChunks [torrentFile]
 
-  case rnf (torrentFile, lazyTorrentFile) of
-    () -> return ()
+  evaluate $ rnf (torrentFile, lazyTorrentFile)
 
   withArgs args $
        defaultMain
@@ -139,15 +143,19 @@ main = do
 
        , let Just v = A.bRead lazyTorrentFile in
          bench "encode/bencode"     $ nf A.bPack v
+#ifdef BENCHMARK_ATTOBENCODE
        , let Right v = Atto.parseOnly bValue torrentFile in
          bench "encode/AttoBencode" $ nf B.encode v
+#endif
        , let Right v = C.parse torrentFile in
          bench "encode/bencoding"   $ nf C.build v
 
        , bench "decode+encode/bencode"     $
            nf (A.bPack  . fromJust . A.bRead) lazyTorrentFile
+#ifdef BENCHMARK_ATTOBENCODE
        , bench "decode+encode/AttoBencode" $
            nf (B.encode . getRight . Atto.parseOnly bValue) torrentFile
+#endif
        , bench "decode+encode/bencoding"   $
            nf (C.build . getRight . C.parse) torrentFile
 
@@ -155,8 +163,10 @@ main = do
            nf (A.bPack . A.BList . L.map (A.BInt . fromIntegral))
               [0..10000 :: Int]
 
+#ifdef BENCHMARK_ATTOBENCODE
        , bench "list10000int/attobencode/encode" $
            nf B.encode [1..20000 :: Int]
+#endif
        , bench "list10000int/bencoding/encode" $
            nf C.encode [1..20000 :: Int]
 
