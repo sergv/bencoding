@@ -1,5 +1,5 @@
 name:                  bencoding
-version:               0.4.4.0
+version:               0.4.5.0
 license:               BSD3
 license-file:          LICENSE
 author:                Sam Truzjan
@@ -10,7 +10,7 @@ category:              Data
 build-type:            Simple
 stability:             Experimental
 cabal-version:         >= 1.10
-tested-with:           GHC == 7.8.4, GHC == 7.10.3, GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.3
+tested-with:           GHC == 7.8.4, GHC == 7.10.3, GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.4, GHC == 8.6.3
 homepage:              https://github.com/sergv/bencoding
 bug-reports:           https://github.com/sergv/bencoding/issues
 synopsis:              A library for encoding and decoding of BEncode data.
