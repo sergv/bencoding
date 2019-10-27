@@ -48,7 +48,9 @@ import Data.ByteString as BS
 import Data.Foldable
 import Data.Monoid (Monoid (mappend, mempty))
 #endif
+#if __GLASGOW_HASKELL__ < 808
 import Data.Semigroup (Semigroup ((<>)))
+#endif
 import GHC.Generics (Generic)
 
 type BKey = ByteString

@@ -103,7 +103,9 @@ import Control.Monad.Error
 #endif
 import Data.Int
 import Data.List as L
+#if __GLASGOW_HASKELL__ < 808
 import Data.Semigroup ((<>))
+#endif
 import Data.Word          (Word8, Word16, Word32, Word64)
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString.Char8 as BC
@@ -679,8 +681,14 @@ instance Monad Get where
   Get m >> Get n = Get (m >> n)
   {-# INLINE (>>) #-}
 
+#if __GLASGOW_HASKELL__ < 808
   fail msg = Get (lift (Left msg))
   {-# INLINE fail #-}
+#else
+instance MonadFail Get where
+  fail msg = Get (lift (Left msg))
+  {-# INLINE fail #-}
+#endif
 
 -- | Run action, but return without consuming and key\/value pair.
 -- Fails if the action fails.
