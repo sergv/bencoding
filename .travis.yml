@@ -29,31 +29,35 @@ matrix:
   fast_finish: true
 
   include:
-    - env: GHC=7.8.4 CABALVER=2.0 GHCHEAD=0
+    - env: GHC=7.8.4 CABALVER=2.0 BENCH=1 GHCHEAD=0
       compiler: "GHC 7.8.4, Cabal 2.0"
       addons: {apt: {packages: [ghc-7.8.4, cabal-install-2.0], sources: [hvr-ghc]}}
 
-    - env: GHC=7.10.3 CABALVER=2.0 GHCHEAD=0
+    - env: GHC=7.10.3 CABALVER=2.0 BENCH=1 GHCHEAD=0
       compiler: "GHC 7.10.3, Cabal 2.0"
       addons: {apt: {packages: [ghc-7.10.3, cabal-install-2.0], sources: [hvr-ghc]}}
 
-    - env: GHC=8.0.2 CABALVER=2.0 GHCHEAD=0
+    - env: GHC=8.0.2 CABALVER=2.0 BENCH=1 GHCHEAD=0
       compiler: "GHC 8.0.2, Cabal 2.0"
       addons: {apt: {packages: [ghc-8.0.2, cabal-install-2.0], sources: [hvr-ghc]}}
 
-    - env: GHC=8.2.2 CABALVER=2.2 GHCHEAD=0
+    - env: GHC=8.2.2 CABALVER=2.2 BENCH=1 GHCHEAD=0
       compiler: "GHC 8.2.2, Cabal 2.0"
       addons: {apt: {packages: [ghc-8.2.2, cabal-install-2.0], sources: [hvr-ghc]}}
 
-    - env: GHC=8.4.4 CABALVER=2.2 GHCHEAD=0
+    - env: GHC=8.4.4 CABALVER=2.2 BENCH=1 GHCHEAD=0
       compiler: "GHC 8.4.4, Cabal 2.2"
       addons: {apt: {packages: [ghc-8.4.3, cabal-install-2.2], sources: [hvr-ghc]}}
 
-    - env: GHC=8.6.3 CABALVER=2.4 GHCHEAD=0
-      compiler: "GHC 8.6.3, Cabal 2.4"
-      addons: {apt: {packages: [ghc-8.6.3, cabal-install-2.4], sources: [hvr-ghc]}}
+    - env: GHC=8.6.5 CABALVER=2.4 BENCH=1 GHCHEAD=0
+      compiler: "GHC 8.6.5, Cabal 2.4"
+      addons: {apt: {packages: [ghc-8.6.5, cabal-install-2.4], sources: [hvr-ghc]}}
 
-    - env: GHC=head CABALVER=head GHCHEAD=1
+    - env: GHC=8.8.1 CABALVER=3.0 BENCH=0 GHCHEAD=0
+      compiler: "GHC 8.8.1, Cabal 3.0"
+      addons: {apt: {packages: [ghc-8.8.1, cabal-install-3.0], sources: [hvr-ghc]}}
+
+    - env: GHC=head CABALVER=head BENCH=0 GHCHEAD=1
       compiler: "GHC HEAD, Cabal HEAD"
       addons: {apt: {packages: [ghc-head, cabal-install-head], sources: [hvr-ghc]}}
 
@@ -108,7 +112,7 @@ install:
 script:
   # test that source-distributions can be generated
   - cabal sdist
-  - cat ./dist/bencoding-*.tar.gz | (cd "${DISTDIR}/" && tar -xzvf -)
+  - cat $(find . -name 'bencoding*.tar.gz') | (cd "${DISTDIR}/" && tar -xzvf -)
   - cd ${DISTDIR}/bencoding-*
   - |
     printf 'packages: \".\"\n' > cabal.project
@@ -117,7 +121,12 @@ script:
   # Build the package
   - echo "Building package"
   - cabal new-configure $ALLOW_NEWER_FLAG -fbenchmark-atto-bencode
-  - cabal new-build --enable-benchmarks
+  - |
+    if [ "$BENCH" = "1" ]; then
+        cabal new-build --enable-benchmarks
+    else
+        cabal new-build
+    fi
   - cabal check
   - cabal new-test
   - cabal new-haddock all
