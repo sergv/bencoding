@@ -131,7 +131,7 @@ lookup x = go
 union :: BDictMap a -> BDictMap a -> BDictMap a
 union Nil xs  = xs
 union xs  Nil = xs
-union bd @ (Cons k v xs) bd' @ (Cons k' v' xs')
+union bd@(Cons k v xs) bd'@(Cons k' v' xs')
   |   k < k'  = Cons k  v  (union xs bd')
   | otherwise = Cons k' v' (union bd xs')
 
