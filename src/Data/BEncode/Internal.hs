@@ -27,9 +27,14 @@ import qualified Data.Attoparsec.ByteString.Char8 as P
 import           Data.ByteString as B
 import           Data.ByteString.Internal as B (c2w, w2c)
 import qualified Data.ByteString.Lazy as Lazy
-import qualified Data.ByteString.Lazy.Builder as B
 import Data.List as L
 import Text.PrettyPrint hiding ((<>))
+
+#if MIN_VERSION_bytestring(0, 10, 12)
+import qualified Data.ByteString.Builder as B
+#else
+import qualified Data.ByteString.Lazy.Builder as B
+#endif
 
 #if __GLASGOW_HASKELL__ < 710
 import Data.Foldable
