@@ -274,7 +274,7 @@ gfromM1S dict
 instance (Selector s, GBEncodable f BValue)
        => GBEncodable (M1 S s f) BDict where
   {-# INLINE gto #-}
-  gto s @ (M1 x) = BC.pack (selRename (selName s)) `BD.singleton` gto x
+  gto s@(M1 x) = BC.pack (selRename (selName s)) `BD.singleton` gto x
 
   {-# INLINE gfrom #-}
   gfrom = gfromM1S
@@ -292,7 +292,7 @@ instance GBEncodable f BValue
 instance (Constructor c, GBEncodable f BDict, GBEncodable f BList)
        => GBEncodable (M1 C c f) BValue where
   {-# INLINE gto #-}
-  gto con @ (M1 x)
+  gto con@(M1 x)
       | conIsRecord con = BDict (gto x)
       |    otherwise    = BList (gto x)
 
