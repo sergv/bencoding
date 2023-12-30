@@ -66,6 +66,9 @@ data T a = T
 prop_bencodable :: Eq a => BEncode a => T a -> a -> Bool
 prop_bencodable _ x = decode (BL.toStrict (encode x)) == Right x
 
+emptyGet :: Get Int
+emptyGet = A.empty
+
 main :: IO ()
 main = hspec $ do
   describe "BValue" $ do
@@ -84,3 +87,9 @@ main = hspec $ do
       fromDict (fail "fatal error" :: Get Int) (BDict BE.Nil)
            `shouldBe`
        Left "fatal error"
+    it "empty alternative is empty string" $ do
+      fromDict emptyGet (BDict BE.Nil) `shouldBe` Left ""
+    it "alternative composition" $ do
+      fromDict (emptyGet <|> emptyGet) (BDict BE.Nil) `shouldBe` Left ""
+      fromDict (pure 5 <|> emptyGet) (BDict BE.Nil) `shouldBe` Right 5
+      fromDict (emptyGet <|> pure 3) (BDict BE.Nil) `shouldBe` Right 3
