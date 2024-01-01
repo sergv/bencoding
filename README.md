@@ -38,7 +38,7 @@ For documentation see package [hackage][hackage] page.
 
 ### Build Status
 
-[![Build Status][travis-img]][travis-log]
+[![build](https://github.com/sergv/bencoding/actions/workflows/ci.yaml/badge.svg)](https://github.com/sergv/bencoding/actions/workflows/ci.yaml)
 
 ### Maintainer <serg.foo@gmail.com>
 
@@ -52,9 +52,6 @@ or the mail.
 [json-ref]: http://www.json.org/
 [attoparsec]: http://hackage.haskell.org/package/attoparsec-0.10.4.0
 [bytestring-builder]: http://hackage.haskell.org/packages/archive/bytestring/0.10.2.0/doc/html/Data-ByteString-Builder.html
-
-[travis-img]: https://travis-ci.org/sergv/bencoding.svg?branch=master
-[travis-log]: https://travis-ci.org/sergv/bencoding
 
 [hackage]: http://hackage.haskell.org/package/bencoding
 [issues]: https://github.com/sergv/bencoding/issues
