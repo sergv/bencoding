@@ -668,7 +668,7 @@ endDict = Nil
 --  \"length\" '<' \"md5sum\" '<' \"path\" '<' \"tags\"
 --
 newtype Get a = Get { runGet :: StateT BDict Result a }
-  deriving (Functor, Applicative, Alternative)
+  deriving (Functor, Applicative)
 
 -- | 'fail' is catchable from pure code.
 instance Monad Get where
@@ -689,6 +689,11 @@ instance MonadFail Get where
   fail msg = Get (lift (Left msg))
   {-# INLINE fail #-}
 #endif
+
+-- | NOTE: @'Control.Applicative.empty' = 'fail' ""@.
+instance Alternative Get where
+  empty = fail ""
+  Get (StateT m) <|> Get (StateT n) = Get $ StateT $ \s -> m s <> n s
 
 -- | Run action, but return without consuming and key\/value pair.
 -- Fails if the action fails.
