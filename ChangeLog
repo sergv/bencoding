@@ -1,3 +1,7 @@
+2024-01-01  Sergey Vinokurov  <serg.foo@gmail.com>
+
+	* 0.4.5.5: Fix build for 9.6
+
 2019-10-27  Sergey Vinokurov  <serg.foo@gmail.com>
 
 	* 0.4.5.2: Fix build for 8.8.1
