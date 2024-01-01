@@ -672,14 +672,8 @@ newtype Get a = Get { runGet :: StateT BDict Result a }
 
 -- | 'fail' is catchable from pure code.
 instance Monad Get where
-  return a = Get (return a)
-  {-# INLINE return #-}
-
   Get m >>= f = Get (m >>= runGet . f)
   {-# INLINE (>>=) #-}
-
-  Get m >> Get n = Get (m >> n)
-  {-# INLINE (>>) #-}
 
 #if __GLASGOW_HASKELL__ < 808
   fail msg = Get (lift (Left msg))

@@ -90,7 +90,7 @@ data Torrent = Torrent {
   } deriving (Show, Eq, Typeable)
 
 instance NFData Torrent where
-  rnf Torrent {..} = ()
+  rnf Torrent {} = ()
 
 instance C.BEncode Torrent where
   toBEncode Torrent {..} = toDict $
