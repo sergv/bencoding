@@ -54,7 +54,7 @@ library
                      , Data.BEncode.BDict
                      , Data.BEncode.Internal
                      , Data.BEncode.Types
-  build-depends:       base       >= 4.4 && < 5
+  build-depends:       base       >= 4.9 && < 5
                      , ghc-prim
                      , integer-gmp
                      , deepseq    >= 1.3
