@@ -45,14 +45,23 @@ import Data.BEncode.Types
 import Data.BEncode.BDict as BD
 
 import GHC.Types
+
+#if MIN_VERSION_integer_gmp(1, 1, 0)
+import GHC.Num.Integer
+#else
 import GHC.Integer.GMP.Internals
+#endif
 
 {--------------------------------------------------------------------
 -- Serialization
 --------------------------------------------------------------------}
 
 integerDecimal :: Integer -> B.Builder
+#if MIN_VERSION_integer_gmp(1, 1, 0)
+integerDecimal (IS i#) = B.intDec (I# i#)
+#else
 integerDecimal (S# i#) = B.intDec (I# i#)
+#endif
 integerDecimal  i      = B.string7 (show i) -- TODO more efficient
 
 -- | BEncode format encoder according to specification.
