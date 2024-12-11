@@ -19,7 +19,7 @@ import Control.DeepSeq
 import Control.Exception
 import           Data.ByteString as BS
 import qualified Data.ByteString.Lazy as BL
-import Data.List as L
+import qualified Data.List as L
 import Data.Maybe
 import Data.Typeable
 import System.Environment
