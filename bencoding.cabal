@@ -1,21 +1,35 @@
+cabal-version:         3.0
+
 name:                  bencoding
 version:               0.4.5.6
-license:               BSD3
+license:               BSD-3-Clause
 license-file:          LICENSE
 author:                Sam Truzjan
 maintainer:            Sergey Vinokurov <serg.foo@gmail.com>
 copyright:             (c) 2013-2018, Sam Truzjan
-                       (c) 2018 Sergey Vinokurov
+                       (c) 2018-2024 Sergey Vinokurov
 category:              Data
 build-type:            Simple
 stability:             Experimental
-cabal-version:         >= 1.10
-tested-with:           GHC == 7.8.4, GHC == 7.10.3, GHC == 8.0.2, GHC == 8.2.2, GHC == 8.4.4, GHC == 8.6.5, GHC == 8.8.1
 homepage:              https://github.com/sergv/bencoding
 bug-reports:           https://github.com/sergv/bencoding/issues
 synopsis:              A library for encoding and decoding of BEncode data.
 description:
   A library for fast and easy encoding and decoding of BEncode data.
+
+tested-with:
+  GHC == 8.0,
+  GHC == 8.2,
+  GHC == 8.4,
+  GHC == 8.6,
+  GHC == 8.8,
+  GHC == 8.10,
+  GHC == 9.0,
+  GHC == 9.2,
+  GHC == 9.4,
+  GHC == 9.6,
+  GHC == 9.8,
+  GHC == 9.10
 
 extra-source-files:    README.md
                      , Changelog.md
@@ -29,7 +43,7 @@ source-repository this
   type:                git
   location:            https://github.com/sergv/bencoding.git
   branch:              master
-  tag:                 v0.4.5.1
+  tag:                 v0.4.5.6
 
 flag dev
   description:
